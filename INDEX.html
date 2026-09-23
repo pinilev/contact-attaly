@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misgav Ladach 46 - Family & Contact Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-panel {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 pb-20">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-11/12 max-w-md"></div>
+
+    <!-- Header with Map button included in action bar -->
+    <header class="bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 text-white shadow-lg sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-xl font-bold shadow-inner border border-white/20">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold font-heading tracking-wide">Misgav Ladach 46</h1>
+                    <p class="text-xs text-amber-100 flex items-center gap-1 font-medium">
+                        <i class="fa-solid fa-location-dot text-amber-300"></i> Jewish Quarter, Jerusalem
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <!-- Top Map Button -->
+                <a href="https://maps.google.com/?q=Misgav+Ladach+46+Jerusalem" target="_blank" class="px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 transition-all text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm border border-white/20" title="Open Google Maps">
+                    <i class="fa-solid fa-location-arrow"></i>
+                    <span>MAP</span>
+                </a>
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-amber-100 hover:text-white" title="Toggle Theme">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+        <!-- Contacts Grid -->
+        <section>
+            <div id="contacts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <!-- Contact cards dynamically injected here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-12 glass-panel rounded-2xl my-4">
+                <i class="fa-solid fa-address-book text-4xl text-slate-300 dark:text-slate-700 mb-3"></i>
+                <h3 class="font-bold text-slate-700 dark:text-slate-300 text-base">No contacts found</h3>
+            </div>
+        </section>
+
+        <!-- Emergency Banner Moved to Bottom -->
+        <section class="mt-8">
+            <div class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 rounded-2xl p-4 text-white shadow-md relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-white animate-ping"></span>
+                        <h2 class="font-heading font-bold text-base tracking-wide uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Emergency Contacts
+                        </h2>
+                    </div>
+                    <span class="text-xs bg-black/20 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20">Speed Dial</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <!-- Police 100 -->
+                    <a href="tel:100" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl p-3 flex flex-col items-center justify-center text-center transition group active:scale-95">
+                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white mb-1 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="text-xs font-semibold">Police</span>
+                        <span class="text-lg font-extrabold font-mono tracking-wider">100</span>
+                    </a>
+
+                    <!-- MDA 101 -->
+                    <a href="tel:101" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-xl p-3 flex flex-col items-center justify-center text-center transition group active:scale-95">
+                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white mb-1 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-kit-medical"></i>
+                        </div>
+                        <span class="text-xs font-semibold">MDA Ambulance</span>
+                        <span class="text-lg font-extrabold font-mono tracking-wider">101</span>
+                    </a>
+
+                    <!-- Jewish Quarter First Responder -->
+                    <a href="tel:054-484-8585" class="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 rounded-xl p-2.5 flex flex-col items-center justify-center text-center transition group active:scale-95 col-span-2 sm:col-span-2">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <i class="fa-solid fa-kit-medical text-amber-300"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-200">Jewish Quarter Local</span>
+                        </div>
+                        <span class="text-sm font-semibold">Yossi Ben Shachar</span>
+                        <span class="text-base font-extrabold font-mono text-amber-100">054-484-8585</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- WIFI QR MODAL -->
+    <div id="wifi-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-sm border border-slate-200 dark:border-slate-800 p-6 text-center space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-bold text-slate-800 dark:text-slate-100 font-heading text-lg">WiFi Connection QR</h3>
+                <button onclick="closeWifiQRModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs text-slate-500 dark:text-slate-400">Scan with phone camera to connect automatically:</p>
+            
+            <div class="bg-white p-4 rounded-xl border border-slate-200 inline-block shadow-inner">
+                <img id="wifi-qr-img" src="" alt="WiFi QR Code" class="w-48 h-48 mx-auto">
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-right text-xs space-y-1 font-mono">
+                <div><span class="text-slate-400 uppercase">Network:</span> <strong class="text-slate-800 dark:text-slate-100">noam</strong></div>
+                <div><span class="text-slate-400 uppercase">Password:</span> <strong class="text-slate-800 dark:text-slate-100">abcdef1939</strong></div>
+            </div>
+
+            <button onclick="closeWifiQRModal()" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold transition">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Cleaned list: Police, MDA, and Jewish Quarter emergency removed from this main list and kept only in the bottom red section
+        const DEFAULT_CONTACTS = [
+            { id: 'c1', name: "HOME", phone: "02-6285955", relation: "", category: "family", notes: "House Landline Phone" },
+            { id: 'c2', name: "YOSSEF", phone: "050-5256729", relation: "PARENT / HEAD", category: "family", notes: "" },
+            { id: 'c3', name: "LEA", phone: "052-6542413", relation: "PARENT / HEAD", category: "family", notes: "" },
+            { id: 'c4', name: "NACHLIEL ATTALI", phone: "050-6264039", relation: "SON", category: "family", notes: "" },
+            { id: 'c5', name: "SARA ATTALI", phone: "052-5700542", relation: "Daughter in law", category: "family", notes: "Nachliel's Wife" },
+            { id: 'c6', name: "AVITAL BLOCE", phone: "054-2232206", relation: "DAUGHTER", category: "family", notes: "" },
+            { id: 'c7', name: "ELISHEVA TAMMIR", phone: "054-3380916", relation: "DAUGHTER", category: "family", notes: "" },
+            { id: 'c8', name: "MORIYAH HAR-ZAHAV", phone: "052-6378920", relation: "DAUGHTER", category: "family", notes: "" },
+            { id: 'c9', name: "AMICHAI ATTALI", phone: "052-4271515", relation: "SON", category: "family", notes: "" },
+            { id: 'c11', name: "'Ahavat Yisrael' Agency", phone: "02-6234936", relation: "Agency", category: "agency", notes: "Community Agency" }
+        ];
+
+        let contacts = [];
+
+        // Initialize App Data
+        function initApp() {
+            contacts = [...DEFAULT_CONTACTS];
+            renderContacts();
+
+            // Set up WiFi QR Code image
+            const wifiQRUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=WIFI:S:noam;T:WPA;P:abcdef1939;;`;
+            document.getElementById('wifi-qr-img').src = wifiQRUrl;
+        }
+
+        // Render Contact Cards Grid
+        function renderContacts() {
+            const grid = document.getElementById('contacts-grid');
+            const emptyState = document.getElementById('empty-state');
+            
+            grid.innerHTML = '';
+
+            if (contacts.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                contacts.forEach(contact => {
+                    grid.appendChild(createContactCard(contact));
+                });
+            }
+        }
+
+        // Create individual contact card element
+        function createContactCard(c) {
+            const card = document.createElement('div');
+            
+            card.className = "glass-panel rounded-2xl p-4 transition-all duration-200 hover:shadow-md border-r-4 border-r-amber-500 flex flex-col justify-between";
+
+            let waLink = '#';
+            if (c.phone.startsWith('05')) {
+                const rawNum = c.phone.replace(/[^0-9]/g, '');
+                waLink = `https://wa.me/972${rawNum.substring(1)}`;
+            }
+
+            const initial = c.name.charAt(0).toUpperCase();
+
+            card.innerHTML = `
+                <div>
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center font-heading font-bold text-base shadow-sm">
+                                ${initial}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base leading-snug">${c.name}</h3>
+                                ${c.relation ? `
+                                    <span class="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-200/50">
+                                        ${c.relation}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    ${c.notes ? `<p class="text-xs text-slate-500 dark:text-slate-400 mb-3 bg-slate-100/60 dark:bg-slate-800/60 p-2 rounded-lg italic"><i class="fa-solid fa-info-circle text-[10px] ml-1"></i>${c.notes}</p>` : ''}
+                    
+                    <div class="font-mono text-base font-bold text-slate-700 dark:text-slate-200 my-2 flex items-center justify-between bg-slate-50 dark:bg-slate-800/40 px-3 py-1.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <span>${c.phone}</span>
+                        <button onclick="copyToClipboard('${c.phone}', '${c.name}\'s phone')" class="text-xs text-slate-400 hover:text-amber-600 transition p-1" title="Copy number">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                    <a href="tel:${c.phone}" class="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+                        <i class="fa-solid fa-phone"></i> Call
+                    </a>
+
+                    ${c.phone.startsWith('05') ? `
+                        <a href="${waLink}" target="_blank" class="flex-1 py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5 active:scale-95">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+                        </a>
+                    ` : ''}
+
+                    <button onclick="downloadVCard('${c.name}', '${c.phone}')" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition text-xs" title="Export vCard to Phonebook">
+                        <i class="fa-solid fa-address-card text-base"></i>
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Clipboard Copy Helper
+        function copyToClipboard(text, label) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+            showToast(`Copied ${label} to clipboard!`, 'success');
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-info text-amber-400';
+            
+            toast.className = 'bg-slate-900/90 text-white text-xs px-4 py-3 rounded-xl shadow-xl backdrop-blur-md border border-slate-700 flex items-center justify-between gap-3 transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto';
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid ${icon} text-base"></i>
+                    <span class="font-medium">${message}</span>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Password Visibility Toggle
+        function togglePasswordVisibility() {
+            const passEl = document.getElementById('wifi-pass-display');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passEl.textContent === 'abcdef1939') {
+                passEl.textContent = '••••••••••';
+                eyeIcon.className = 'fa-regular fa-eye';
+            } else {
+                passEl.textContent = 'abcdef1939';
+                eyeIcon.className = 'fa-regular fa-eye-slash';
+            }
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        function showWifiQRModal() {
+            document.getElementById('wifi-modal').classList.remove('hidden');
+        }
+
+        function closeWifiQRModal() {
+            document.getElementById('wifi-modal').classList.add('hidden');
+        }
+
+        // vCard exporter
+        function downloadVCard(name, phone) {
+            const vcardData = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+TEL;TYPE=CELL:${phone}
+NOTE:Misgav Ladach 46 Contact List
+END:VCARD`;
+
+            const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${name.replace(/\s+/g, '_')}.vcf`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`vCard for ${name} downloaded`, 'success');
+        }
+
+        // Apply saved theme on boot
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            const themeIcon = document.getElementById('theme-icon');
+            if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+        }
+
+        // Init on page load
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
